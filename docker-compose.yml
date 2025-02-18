@@ -1,0 +1,92 @@
+services:
+  
+  # dynamodb:
+  #   container_name: dynamodb
+  #   command: '-jar DynamoDBLocal.jar -sharedDb -dbPath ./data'
+  #   image: public.ecr.aws/aws-dynamodb-local/aws-dynamodb-local:latest
+  #   ports:
+  #     - "8000"
+  #   volumes:
+  #     - './dynamodb-local/data:/home/dynamodblocal/data'
+
+  neo4j:
+    container_name: neo4j
+    command: ['neo4j']
+    image: public.ecr.aws/docker/library/neo4j:5-bullseye
+    ports:
+      - "7474"
+      - "7687"
+    environment:
+      NEO4J_AUTH: 'neo4j/secretpassword'
+    volumes:
+      - './neo4j/data:/data'
+
+  # lambda:
+  #   container_name: lambda
+  #   build:
+  #     dockerfile: Dockerfile
+  #     target: lambda
+  #   environment:
+  #     APPLICATION: ''
+  #     AWS_ENDPOINT_URL_DYNAMODB: 'http://dynamodb:8000/'
+  #     AWS_LAMBDA_FUNCTION_MEMORY_SIZE: '10240'
+  #     AWS_LAMBDA_FUNCTION_TIMEOUT: '900'
+  #     AWS_PROFILE: ''
+  #   ports:
+  #     - "8080"
+  #   volumes:
+  #     - '$HOME/.aws:/root/.aws'
+  #     - './lambda-app:/code'
+  #     - './thisapp:/code/thisapp'
+  #     - './.env:/code/.env'
+
+  streamlit:
+    container_name: streamlit
+    command: ['--server.runOnSave', 'true']
+    build:
+      dockerfile: Dockerfile
+      target: streamlit
+    ports:
+      - "8501"
+    environment:
+      APPLICATION: ''
+      AWS_PROFILE: ''
+    volumes:
+      - '$HOME/.aws:/home/streamlit/.aws'
+      - './streamlit-app:/code'
+      - './thisapp:/code/thisapp'
+      - '${PWD}/.env:/code/.env'
+
+  fastapi:
+    container_name: fastapi
+    command: ['--reload']
+    build:
+      dockerfile: Dockerfile
+      target: fastapi
+    # depends_on:
+    #   - dynamodb
+    ports:
+      - "8000"
+    environment:
+      APPLICATION: ''
+      # AWS_ENDPOINT_URL_DYNAMODB: 'http://dynamodb:8000/'
+      AWS_PROFILE: ''
+    volumes:
+      - '$HOME/.aws:/root/.aws'
+      - './fastapi-app:/code'
+      - './thisapp:/code/thisapp'
+      - '${PWD}/.env:/code/.env'
+
+  devcontainer:
+    container_name: devcontainer
+    build:
+      dockerfile: Dockerfile
+      target: devcontainer
+    environment:
+      APPLICATION: ''
+      AWS_PROFILE: ''
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '$HOME/.aws:/root/.aws'
+      - '.:/code'
+      - '.:/workspace'
