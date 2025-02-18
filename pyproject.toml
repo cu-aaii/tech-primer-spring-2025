@@ -3,9 +3,9 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "streamlit-app"
+name = "tech-primer"
 version = "0.1.0"
-description = "Streamlit app development environment"
+description = "Tech Primer for AI Innovation Lab"
 authors = ["Marty Sullivan <marty@martysullivan.com>"]
 include = ["thisapp"]
 
