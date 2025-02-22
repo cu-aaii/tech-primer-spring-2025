@@ -44,6 +44,23 @@ Error response from daemon: failed to create task for container: failed to creat
 
 Once you delete these, try to "Reopen in Container" again.
 
+*Additional Note:* When working with Docker to build or deploy applications, it’s essential to ensure your system has sufficient resources allocated, such as memory and disk space. Resource limitations can lead to issues like "At least one invalid signature was encountered", failed builds, or repository update errors. These problems might not necessarily relate to the image, dependencies, or your code, but rather insufficient memory or storage constraints causing corruption/errors during downloads or signature verifications.
+
+1. Allocate More Memory and CPU to Docker (When Using Docker Desktop):
+    - Go to Docker Desktop → Settings → Resources.
+    - Adjust Memory limit and Disk usage limit appropriately.
+2. Free Up Docker-Related Disk Space:
+    - If your disk space is limited, Docker might fail to allocate space leading to unexpected errors. Run the following commands to clean up unused images and containers: `docker image prune -f`, `docker container prune -f`.
+    - These commands help reclaim storage by removing unused Docker images, dangling containers, unused volumes, and stale build caches.
+3. Check Overall System Resources:
+    - Ensure that your host system (Mac, Windows, or Linux) has sufficient available memory free during builds (especially on systems with less than 8 GB of RAM). If needed, close unused applications or processes to free up resources.
+
+*Example:* If you encounter an error like this during `apt-get update` or package installation:
+
+`W: GPG error: http://deb.debian.org/debian buster InRelease: At least one invalid signature was encountered.`
+
+`E: The repository 'http://deb.debian.org/debian buster InRelease' is not signed.`, then cleaning Docker system resources as mentioned above can help fix this issue potentially.
+
 ## Making code available to all components
 
 The `thisapp` directory is set up so that all running components will have access to the python code underneath as a module.
