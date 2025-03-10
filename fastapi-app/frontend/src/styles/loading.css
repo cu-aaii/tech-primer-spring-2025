@@ -1,0 +1,109 @@
+/* ============================
+    12) LOADING SPINNERS
+============================ */
+
+/* Execute Button Loading spinner */
+.animate-spin {
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  stroke: var(--text-light);
+  stroke-width: 2px;
+  opacity: 0.9;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading animation for file-button */
+@keyframes button-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ============================
+    LOADING STATES
+============================ */
+
+/* Disabled button with spinner styling */
+button:disabled:has(.animate-spin) {
+  opacity: 1;
+  position: relative;
+  background-color: var(--success-darker);
+  border: 1px solid var(--success-border);
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+
+  /* Subtle pulse animation */
+  animation: button-pulse 2s ease-in-out infinite;
+}
+
+/* Gentle pulse animation */
+@keyframes button-pulse {
+  0%, 100% {
+    background-color: var(--success-darker);
+    box-shadow: 0 0 0 1px var(--success-border);
+  }
+  50% {
+    background-color: var(--success-darkest);
+    box-shadow: 0 0 0 1px var(--success),
+                0 0 15px -2px var(--success-glow);
+  }
+}
+
+/* Loading indicator text */
+button:disabled:has(.animate-spin)::after {
+  content: "Processing...";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--text-light);
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+/* Focus ring animation */
+button:disabled:has(.animate-spin)::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid var(--success-border);
+  opacity: 0;
+  animation: focus-ring 2s ease-in-out infinite;
+}
+
+@keyframes focus-ring {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+
+/* File upload button specific styling */
+.file-upload-button:disabled:has(.animate-spin) {
+  background: var(--success-darkest);
+}
+
+/* CSS Variables (add to :root if not already present) */
+:root {
+  --success: rgb(34, 197, 94);
+  --success-border: rgba(34, 197, 94, 0.3);
+  --success-darker: rgba(22, 128, 61, 0.5);  /* Darker shade of green */
+  --success-darkest: rgba(17, 94, 45, 0.7);  /* Even darker shade */
+  --success-glow: rgba(34, 197, 94, 0.2);    /* Subtle glow effect */
+  --text-light: #e5e5e5;
+}
