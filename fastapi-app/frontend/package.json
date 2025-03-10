@@ -1,0 +1,24 @@
+{
+  "name": "toolbot-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "copy-favicon": "cp public/fav.jpg /",
+    "build": "tsc && vite build && npm run copy-favicon",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vitest": "^1.4.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.414.0",
+    "@preact/signals-core": "^1.8.0",
+    "marked": "^15.0.7",
+    "mathjs": "^11.12.0"
+  }
+}
